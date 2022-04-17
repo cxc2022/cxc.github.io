@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>
+      Intro to MapView - Create a 2D map | Sample | ArcGIS API for JavaScript
+      4.23
+    </title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      /*#other{*/
+      /*  position: absolute;*/
+      /*  z-index: 1;*/
+      /*  left:69% ;*/
+      /*  top: 60%;*/
+      /*  height: 300px;*/
+      /*}*/
+      .top{
+        height: 50px;
+        width: 100%;
+        background-color:rgba(95, 158, 160, 0.821);
+        color: rgb(240, 252, 255);
+        padding-left: 50px;
+        box-sizing:border-box;
+      }
+      .top b{
+        line-height:45px;
+        font-size: 28px;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.23/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.23/"></script>
+
+    <script>
+            require(["esri/Map", "esri/views/MapView","esri/layers/FeatureLayer","esri/layers/TileLayer","esri/widgets/Legend","esri/widgets/ScaleBar","esri/widgets/LayerList","esri/widgets/Search","esri/widgets/Popup","esri/widgets/Editor","esri/widgets/Print","esri/widgets/Home","esri/widgets/BasemapGallery","esri/widgets/Measurement","esri/widgets/CoordinateConversion"], (Map, MapView,FeatureLayer,Tilelayer,Legend,ScaleBar,LayerList,Search,Popup,Editor,Print,Home,BasemapGallery,Measurement,CoordinateConversion) => {
+              const map = new Map({
+                basemap: "national-geographic"
+              });
+
+              const view = new MapView({
+                container: "viewDiv",
+                map: map,
+                zoom: 4,
+                center: [120, 35] // longitude, latitude
+              });
+   
+ 
+ 
+              const layer = new FeatureLayer({
+                // URL to the service
+                url: "https://www.geosceneonline.cn/server/rest/services/Hosted/%E4%B8%AD%E5%9B%BD%E5%90%84%E7%9C%81%E5%B9%B4%E6%B0%B4%E8%B5%84%E6%BA%90%E6%80%BB%E9%87%8F%E6%95%B0%E6%8D%AE/FeatureServer" 
+              });
+               
+
+              map.add(layer);
+              
+    const legend = new Legend({
+          view: view,
+          container: "final",
+          layerInfos: [
+            {
+              layer: layer,
+              title: "中国各省年水资源汇总（单位：亿立方米）"
+            }
+          ]
+        });
+
+        // view.ui.add(legend, "bottom-right");
+let scaleBar = new ScaleBar({
+  view: view,
+  style:"ruler",
+  unit:"metric"
+});
+
+view.ui.add(scaleBar, {position: "bottom-left"
+});
+let layerList = new LayerList({
+  view: view
+});
+// Adds widget below other elements in the top left corner of the view
+view.ui.add(layerList, {
+  position: "top-left"
+});
+const searchWidget = new Search({
+  view: view
+});
+// Adds the search widget below other elements in
+// the top left corner of the view
+view.ui.add(searchWidget, {
+  position: "top-right",
+  index: 2
+});
+      view.ui.add(legend, "bottom-right");
+         
+
+ const editor = new Editor({
+          view: view
+        });
+
+        view.ui.add(editor, "top-left");
+
+
+      const print = new Print({
+  view: view,
+  // specify your own print service
+  printServiceUrl:
+     "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+});
+
+// Adds widget below other elements in the top left corner of the view
+view.ui.add(print, {
+  position: "top-left"
+  
+});
+const basemapGallery = new BasemapGallery({
+  view: view
+});
+
+// Add the widget to the top-right corner of the view
+view.ui.add(basemapGallery, {
+  position: "top-right"
+});
+const measurement = new Measurement({
+  view: view,
+  activeTool: "direct-line"
+  
+});
+let ccWidget = new CoordinateConversion({
+  view: view
+});
+
+// Adds widget in the bottom left corner of the view
+view.ui.add(ccWidget, "bottom-right");
+
+});
+    </script>
+  </head>
+  <body>
+     <div id="basemapGalleryDiv"></div>
+    <div class="top">
+      <b>中国各省水资源调查</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <i>Water resources in China</i>
+      </div>
+      <div id="searchdiv"></div>
+    <div id="viewDiv"></div>
+    <div id="other"></div>
+    <div id="final"></div>
+   
+  </body>
+</html>
